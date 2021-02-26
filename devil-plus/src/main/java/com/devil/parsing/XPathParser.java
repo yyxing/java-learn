@@ -17,14 +17,13 @@ import java.util.Properties;
  * @Create: 2021-02-23 14:37
  **/
 public class XPathParser {
-    private Document document;
     private Element root;
 
 
     public XPathParser(InputStream in) {
         try {
             // 将流生成document
-            document = new SAXReader().read(in);
+            Document document = new SAXReader().read(in);
             // 获取根元素
             root = document.getRootElement();
         } catch (DocumentException e) {

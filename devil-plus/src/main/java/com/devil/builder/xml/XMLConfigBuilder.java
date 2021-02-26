@@ -2,9 +2,13 @@ package com.devil.builder.xml;
 
 import com.devil.mapping.Configuration;
 import com.devil.parsing.XPathParser;
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
+import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.Node;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Properties;
@@ -38,6 +42,10 @@ public class XMLConfigBuilder {
         configuration = new Configuration();
     }
 
+    /**
+     * 解析数据源的配置文件至Configuration
+     * @return {@link Configuration} 配置类
+     */
     public Configuration parse() {
         if (parsed) {
             throw new RuntimeException("Each XMLConfigBuilder can only be used once.");
@@ -47,19 +55,47 @@ public class XMLConfigBuilder {
         return configuration;
     }
 
+    /**
+     * 解析至配置类中
+     * @param root 根节点
+     */
     private void parseConfiguration(Element root) {
         try {
             parseProperties((Element) root.selectSingleNode("//properties"));
             parseDatasource((Element) root.selectSingleNode("//datasource"));
+            parseMapper((Element) root.selectSingleNode("//mappers"));
         } catch (Exception e) {
             throw new RuntimeException("Error parsing SQL Mapper Configuration. Cause: " + e, e);
         }
     }
 
-    private void parseDatasource(Element root) {
-
+    /**
+     * 解析Mapper标签
+     * @param root 根节点
+     */
+    private void parseMapper(Element root) throws IOException, DocumentException, ClassNotFoundException {
+        XMLMapperBuilder xmlMapperBuilder = new XMLMapperBuilder(configuration);
+        xmlMapperBuilder.parse(root);
     }
 
+    /**
+     * 解析数据源
+     * @param root 根节点
+     */
+    private void parseDatasource(Element root) {
+        Properties properties = parser.getChildrenAsProperties(root);
+        HikariConfig hikariConfig = new HikariConfig();
+        hikariConfig.setUsername(properties.getProperty("username"));
+        hikariConfig.setPassword(properties.getProperty("password"));
+        hikariConfig.setJdbcUrl(properties.getProperty("url"));
+        hikariConfig.setDriverClassName(properties.getProperty("driver"));
+        configuration.setDataSource(new HikariDataSource(hikariConfig));
+    }
+
+    /**
+     * 解析properties 解析配置属性
+     * @param root 根节点
+     */
     private void parseProperties(Element root) {
         if (null != root) {
             Properties defaults = parser.getChildrenAsProperties(root);
@@ -70,5 +106,4 @@ public class XMLConfigBuilder {
             configuration.setVariables(defaults);
         }
     }
-
 }

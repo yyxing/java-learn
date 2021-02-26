@@ -37,4 +37,8 @@ public class Resources {
         }
         return in;
     }
+
+    public static Class<?> classForName(String className) throws ClassNotFoundException {
+        return classLoaderWrapper.classForName(className);
+    }
 }

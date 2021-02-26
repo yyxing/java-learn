@@ -43,6 +43,39 @@ public class MappedStatement {
      */
     private String sql;
 
+    /**
+     * sql类型 select update insert
+     */
+    private SqlCommandType sqlCommandType;
+
+    public MappedStatement(Configuration configuration) {
+        this.configuration = configuration;
+    }
+
+    public SqlCommandType getSqlCommandType() {
+        return sqlCommandType;
+    }
+
+    public void setSqlCommandType(String sqlCommandName) {
+        switch (sqlCommandName){
+            case "select":
+                this.sqlCommandType = SqlCommandType.SELECT;
+                break;
+            case "update":
+                this.sqlCommandType = SqlCommandType.UPDATE;
+                break;
+            case "delete":
+                this.sqlCommandType = SqlCommandType.DELETE;
+                break;
+            case "insert":
+                this.sqlCommandType = SqlCommandType.INSERT;
+                break;
+            default:
+                this.sqlCommandType = SqlCommandType.UNKNOWN;
+                break;
+        }
+    }
+
     public Configuration getConfiguration() {
         return configuration;
     }

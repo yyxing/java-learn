@@ -8,4 +8,9 @@ package com.devil.session;
  **/
 public interface SqlSessionFactory {
 
+    /**
+     * 生成SqlSession SqlSession用于封装JDBC操作 与数据库真正的连接擦欧总
+     * @return {@link SqlSession}
+     */
+    SqlSession openSession();
 }

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mapper namespace="com.devil.test.UserMapper">
+    <select id="findById" parameterType="com.devil.test.User" resultType="com.devil.test.User">
+        select
+        *
+        FROM user
+        WHERE id = #{id}
+    </select>
+
+    <select id="selectList" parameterType="com.devil.test.User" resultType="com.devil.test.User">
+        select
+        *
+        from user
+    </select>
+</mapper>
