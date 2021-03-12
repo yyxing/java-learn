@@ -82,7 +82,7 @@ public class SimpleExecutor implements Executor {
         List<ParameterMapping> parameterMappings = boundSql.getParameterMappings();
         Class<?> parameterClass = Resources.classForName(parameterType);
         Object parameterValue = null;
-        if (params != null){
+        if (params != null) {
             for (Object p : params) {
                 if (p.getClass() == parameterClass) {
                     parameterValue = p;
@@ -105,7 +105,17 @@ public class SimpleExecutor implements Executor {
 
     @Override
     public int update(MappedStatement ms, Object... params) throws Exception {
-        return 0;
+        // 注册驱动获取连接
+        Connection conn = getConnection(ms.getConfiguration());
+        // 获取解析后sql
+        BoundSql boundSql = buildBoundSql(ms.getSql());
+        // 获取preparedStatement
+        PreparedStatement statement = buildPreparedStatement(conn, boundSql);
+        // 设置参数
+        setParameterToSql(statement, boundSql, ms.getParameterType(), params);
+        statement.execute();
+        // 拼接返回集合
+        return statement.getUpdateCount();
     }
 
     private BoundSql buildBoundSql(String sql) {

@@ -12,4 +12,16 @@
         *
         from user
     </select>
+
+    <insert id="insert" parameterType="com.devil.test.User" resultType="java.lang.Integer">
+        INSERT INTO `test`.`user` (`username`, `phone_number`) VALUES (#{username}, #{phoneNumber})
+    </insert>
+
+    <insert id="update" parameterType="com.devil.test.User" resultType="java.lang.Integer">
+        UPDATE `test`.`user` SET `username`=#{username} WHERE `id`=#{id};
+    </insert>
+
+    <insert id="delete" parameterType="com.devil.test.User" resultType="java.lang.Integer">
+        delete from `test`.`user` where id = #{id}
+    </insert>
 </mapper>

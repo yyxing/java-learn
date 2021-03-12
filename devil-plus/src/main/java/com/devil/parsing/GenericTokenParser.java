@@ -100,6 +100,9 @@ public class GenericTokenParser {
             // 找下一个openToken
             start = text.indexOf(openToken, offset);
         }
+        if (offset < src.length) {
+            builder.append(src, offset, src.length - offset);
+        }
         return builder.toString();
     }
 }

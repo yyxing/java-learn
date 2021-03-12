@@ -7,7 +7,6 @@ import com.devil.session.SqlSessionFactoryBuilder;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
 
 /**
  * @Program: study
@@ -22,8 +21,10 @@ public class Test {
         SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(in);
         SqlSession sqlSession = sqlSessionFactory.openSession();
         User user = new User();
-        user.setId(1);
+        user.setId(3);
+        user.setUsername("lulu3");
+        user.setPhoneNumber("17835416638");
         UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
-        System.out.println(userMapper.selectList());
+        System.out.println(userMapper.delete(user));
     }
 }

@@ -49,17 +49,32 @@ public class DefaultSqlSession implements SqlSession {
 
     @Override
     public int insert(String statement, Object... params) {
-        return 0;
+        try {
+            MappedStatement ms = configuration.getMapperStatement(statement);
+            return executor.update(ms, params);
+        } catch (Exception e) {
+            throw new RuntimeException("Error querying database.  Cause: " + e, e);
+        }
     }
 
     @Override
     public int update(String statement, Object... params) {
-        return 0;
+        try {
+            MappedStatement ms = configuration.getMapperStatement(statement);
+            return executor.update(ms, params);
+        } catch (Exception e) {
+            throw new RuntimeException("Error querying database.  Cause: " + e, e);
+        }
     }
 
     @Override
     public int delete(String statement, Object... params) {
-        return 0;
+        try {
+            MappedStatement ms = configuration.getMapperStatement(statement);
+            return executor.update(ms, params);
+        } catch (Exception e) {
+            throw new RuntimeException("Error querying database.  Cause: " + e, e);
+        }
     }
 
     @Override

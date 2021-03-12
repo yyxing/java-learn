@@ -13,4 +13,11 @@ public interface UserMapper {
     User findById(User user);
 
     List<User> selectList();
+
+    int insert(User user);
+
+    int delete(User user);
+
+    int update(User user);
+
 }
